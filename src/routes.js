@@ -1,29 +1,30 @@
 const express = require('express')
+const mongoose = require('mongoose')
 
 const todoRoutes = express.Router()
 
-const allTodos = [
-  {
-    title: '1 note',
-    description: 'hello, it is my first note',
-    favorite: false,
-    color: '#fff'
-  }
-]
-
-todoRoutes.get('/todos', (req, res) => {
-  return res.status(200).json(allTodos)
+const Note = mongoose.model('Note', {
+  title: String,
+  description: String,
+  favorite: Boolean,
+  color: String
 })
 
-todoRoutes.post('/todos', (req, res) => {
+todoRoutes.get('/todos', async (req, res) => {
+  const notes = await Note.find()
+  return res.status(200).json(notes)
+})
+
+todoRoutes.post('/todos', async (req, res) => {
   const { title, description, favorite, color } = req.body
-  allTodos.push({
+  const note = new Note({
     title,
     description,
     favorite,
     color
   })
-  return res.status(201).json(allTodos)
+  await note.save()
+  return res.status(201).json(note)
 })
 
 module.exports = todoRoutes
