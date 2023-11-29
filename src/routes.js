@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 
-const todoRoutes = express.Router()
+const notesRoutes = express.Router()
 
 const Note = mongoose.model('Note', {
   title: String,
@@ -11,13 +11,13 @@ const Note = mongoose.model('Note', {
 })
 
 // GET
-todoRoutes.get('/todos', async (req, res) => {
+notesRoutes.get('/notes', async (req, res) => {
   const notes = await Note.find()
   return res.status(200).json(notes)
 })
 
 // POST
-todoRoutes.post('/todos', async (req, res) => {
+notesRoutes.post('/notes', async (req, res) => {
   const { title, description, favorite, color } = req.body
   const note = new Note({
     title,
@@ -30,7 +30,7 @@ todoRoutes.post('/todos', async (req, res) => {
 })
 
 // PUT
-todoRoutes.put('/todos/:id', async (req, res) => {
+notesRoutes.put('/notes/:id', async (req, res) => {
   const { title, description, favorite, color } = req.body
   const note = await Note.findByIdAndUpdate(
     req.params.id,
@@ -48,9 +48,9 @@ todoRoutes.put('/todos/:id', async (req, res) => {
 })
 
 // DELETE
-todoRoutes.delete('/todos/:id', async (req, res) => {
+notesRoutes.delete('/notes/:id', async (req, res) => {
   const note = await Note.findByIdAndDelete(req.params.id)
   return res.status(200).json(note)
 })
 
-module.exports = todoRoutes
+module.exports = notesRoutes

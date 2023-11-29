@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const mongoose = require('mongoose')
 
 const app = express()
@@ -10,6 +11,7 @@ const mongo_password = 'FauWSTN1w535RkJb'
 
 const todoRoutes = require('./routes')
 
+app.use(cors())
 app.use(express.json())
 app.use(todoRoutes)
 
